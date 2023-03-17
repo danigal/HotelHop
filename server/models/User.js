@@ -31,6 +31,11 @@ const UserSchema = new mongoose.Schema(
     },
     location: String,
     occupation: String,
+    role: {
+      type: String,
+      enum: ["user", "admin", "superadmin"],
+      default: "admin",
+    },
   },
   { timestamps: true }
 );
