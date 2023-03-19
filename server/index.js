@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import hotelRoutes from "./routes/hotels.js";
+import roomRoutes from "./routes/rooms.js";
 //import sceneRoutes from "./routes/scenes.js";
 
 import { register } from "./controllers/auth.js";
@@ -63,6 +64,7 @@ app.post("/auth/register", upload.single("picture"), register);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/hotels", hotelRoutes);
+app.use("/rooms", roomRoutes);
 //app.use("/scenes", sceneRoutes);
 //app.use("/spots", spotRoutes);
 

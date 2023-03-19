@@ -6,6 +6,8 @@ import {
   getHotels,
   updateHotel,
   deleteHotel,
+  countByCity,
+  countByType,
 } from "../controllers/hotels.js";
 import { verifyAdmin } from "../middleware/auth.js";
 
@@ -18,7 +20,9 @@ router.post("/", verifyAdmin, createHotel);
 
 /* READ */
 router.get("/", getHotels);
-router.get("/:id", getHotel);
+router.get("find/:id", getHotel);
+router.get("/countByCity", countByCity);
+router.get("/countByType", countByType);
 
 /* UPDATE */
 router.put("/:id", verifyAdmin, updateHotel);
