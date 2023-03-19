@@ -1,15 +1,28 @@
 import express from "express";
 //import { getScenarios, createScenario } from "../controllers/hotels.js";
-import { createHotel } from "../controllers/hotels.js";
-import { verifyToken } from "../middleware/auth.js";
+import {
+  createHotel,
+  getHotel,
+  getHotels,
+  updateHotel,
+  deleteHotel,
+} from "../controllers/hotels.js";
+import { verifyAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
 
 /* CREATE */
-router.post("/", createHotel);
+router.post("/", verifyAdmin, createHotel);
 
 //router.post("/", verifyToken, createScenario)
 
-/* UPDATE */
+/* READ */
+router.get("/", getHotels);
+router.get("/:id", getHotel);
 
+/* UPDATE */
+router.put("/:id", verifyAdmin, updateHotel);
+
+/* DELETE */
+router.delete("/:id", verifyAdmin, deleteHotel);
 export default router;

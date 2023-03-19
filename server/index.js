@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -35,6 +36,7 @@ app.use(morgan("common"));
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+app.use(cookieParser());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
@@ -63,6 +65,18 @@ app.use("/users", userRoutes);
 app.use("/hotels", hotelRoutes);
 //app.use("/scenes", sceneRoutes);
 //app.use("/spots", spotRoutes);
+
+/* ERROR HANDLING */
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Something went wrong!";
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+  });
+});
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;

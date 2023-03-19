@@ -29,12 +29,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    location: String,
-    occupation: String,
-    role: {
-      type: String,
-      enum: ["user", "admin", "superadmin"],
-      default: "admin",
+    city: String,
+    country: String,
+    phone: String,
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
