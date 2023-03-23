@@ -18,7 +18,7 @@ const useFetch = (url) => {
       setLoading(false);
     };
     fetchData();
-  }, [url]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const reFetch = async () => {
     setLoading(true);

@@ -39,6 +39,7 @@ export const deleteHotel = async (req, res, next) => {
 /* READ */
 export const getHotel = async (req, res, next) => {
   try {
+    console.log("req.params.id", req.params.id);
     const hotel = await Hotel.findById(req.params.id);
     res.status(200).json(hotel);
   } catch (err) {
@@ -48,7 +49,13 @@ export const getHotel = async (req, res, next) => {
 
 export const getHotels = async (req, res, next) => {
   try {
-    const hotels = await Hotel.find(req.params.id);
+    const { min, max, limit, ...others } = req.query; // we separate the min and max price from the rest of the query string parameters
+
+    const hotels = await Hotel.find({
+      ...others, // we spread the rest of the query string parameters
+      cheapestPrice: { $gte: min || 1, $lte: max || 999 }, // we have to set default values for min and max because they are optional
+    }).limit(limit);
+
     res.status(200).json(hotels);
   } catch (err) {
     next(err);

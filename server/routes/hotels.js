@@ -20,7 +20,7 @@ router.post("/", verifyAdmin, createHotel);
 
 /* READ */
 router.get("/", getHotels);
-router.get("find/:id", getHotel);
+router.get("/find/:id", getHotel);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 

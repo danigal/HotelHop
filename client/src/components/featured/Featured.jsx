@@ -1,12 +1,11 @@
+import { BASE_URL } from "utils/constants";
 import useFetch from "../../hooks/useFetch";
 import "./featured.css";
 
 const Featured = () => {
-  const API_URL = process.env.REACT_APP_BASE_URL;
   const { data, loading, error } = useFetch(
-    `${API_URL}/hotels/countByCity?cities=berlin,madrid,london`
+    `${BASE_URL}/hotels/countByCity?cities=berlin,madrid,london`
   );
-  console.log(data);
   return (
     <div className="featured">
       {loading ? (
