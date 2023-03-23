@@ -9,7 +9,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 function App() {
-  const mode = useSelector((state) => state.mode); // we grab the mode from the state
+  const mode = useSelector((state) => state.mode.mode); // we grab the mode from the state
+  console.log(mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <BrowserRouter>

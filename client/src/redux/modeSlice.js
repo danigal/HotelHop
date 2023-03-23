@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const userSlice = createSlice({
+export const modeSlice = createSlice({
   name: "mode",
   initialState: {
-    model: "light",
+    mode: "light",
   },
   reducers: {
     setMode: (state) => {
-      state.model = state.model === "light" ? "dark" : "light";
+      state.mode = state.mode === "light" ? "dark" : "light";
     },
   },
 });
 
-export const { setLogin, setLogout } = userSlice.actions;
+export const { setMode } = modeSlice.actions;
 
-export default userSlice.reducer;
+export default modeSlice.reducer;
