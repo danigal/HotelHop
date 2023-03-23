@@ -88,14 +88,14 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
+
     if (loggedIn) {
       dispatch(
         setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
+          user: loggedIn.details,
         })
       );
-      navigate("/home");
+      navigate("/");
     }
   };
 
@@ -135,7 +135,7 @@ const Form = () => {
                   label="First Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
+                  value={values.firstName || ""}
                   name="firstName"
                   error={
                     Boolean(touched.firstName) && Boolean(errors.firstName)
@@ -147,7 +147,7 @@ const Form = () => {
                   label="Last Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.lastName}
+                  value={values.lastName || ""}
                   name="lastName"
                   error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
@@ -157,7 +157,7 @@ const Form = () => {
                   label="Location"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.location}
+                  value={values.location || ""}
                   name="location"
                   error={Boolean(touched.location) && Boolean(errors.location)}
                   helperText={touched.location && errors.location}
@@ -167,7 +167,7 @@ const Form = () => {
                   label="Occupation"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.occupation}
+                  value={values.occupation || ""}
                   name="occupation"
                   error={
                     Boolean(touched.occupation) && Boolean(errors.occupation)

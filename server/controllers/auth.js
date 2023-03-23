@@ -14,7 +14,7 @@ export const register = async (req, res, next) => {
       password: hash,
     });
     await newUser.save();
-    res.status(201).send("User created"); // 201 is the status code for created
+    res.status(201).json(newUser); // 201 is the status code for created
   } catch (err) {
     next(err);
   }

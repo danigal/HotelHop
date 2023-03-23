@@ -29,9 +29,8 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    city: String,
-    country: String,
-    phone: String,
+    location: String,
+    occupation: String,
     isAdmin: {
       type: Boolean,
       default: false,
