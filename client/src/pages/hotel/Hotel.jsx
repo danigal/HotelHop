@@ -1,8 +1,6 @@
 import "./hotel.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import MailList from "../../components/mailList/MailList";
-import Footer from "../../components/footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
@@ -89,7 +87,7 @@ const Hotel = () => {
               />
               <div className="sliderWrapper">
                 <img
-                  src={data.photos[slideNumber]}
+                  src={`${BASE_URL}/assets/${data.photos[slideNumber]}`}
                   alt=""
                   className="sliderImg"
                 />
@@ -122,7 +120,7 @@ const Hotel = () => {
                 <div className="hotelImgWrapper" key={i}>
                   <img
                     onClick={() => handleOpen(i)}
-                    src={photo}
+                    src={`${BASE_URL}/assets/${photo}`}
                     alt=""
                     className="hotelImg"
                   />
@@ -148,8 +146,6 @@ const Hotel = () => {
               </div>
             </div>
           </div>
-          <MailList />
-          <Footer />
         </div>
       )}
       {openBookModal && <Reserve setOpen={setOpenBookModal} hotelId={id} />}

@@ -3,26 +3,25 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import { host, v } from "../../config/config";
+import { BASE_URL } from "../../config/config";
 import { useEffect, useState } from "react";
 import EditUser from "../../components/editUser/EditUser";
 
 const SingleUser = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
 
-  const location = useLocation()
-  const id = location.pathname.split("/")[2]
-
-  const {data , reFetch} = useFetch(`${host}/api/${v}/users/${id}`, {
-    credentials: "include"
-  })
+  const { data, reFetch } = useFetch(`${BASE_URL}/users/${id}`, {
+    credentials: "include",
+  });
 
   // to open and close the edit modal
-  const [openEditForm, setOpenEditForm] = useState(false)
+  const [openEditForm, setOpenEditForm] = useState(false);
 
-  useEffect(()=>{
-    reFetch()
+  useEffect(() => {
+    reFetch();
     // eslint-disable-next-line
-  }, [openEditForm])
+  }, [openEditForm]);
 
   return (
     <div className="singleUser">
@@ -30,16 +29,18 @@ const SingleUser = () => {
       <div className="singleContainer">
         <Navbar />
         <div className="top">
-
           <div className="left">
-            <div className="editButton" onClick={()=>{setOpenEditForm(!openEditForm)}} >Edit</div>
+            <div
+              className="editButton"
+              onClick={() => {
+                setOpenEditForm(!openEditForm);
+              }}
+            >
+              Edit
+            </div>
             <h1 className="title">Information</h1>
             <div className="item">
-              <img
-                src={data.img}
-                alt="avatar"
-                className="itemImg"
-              />
+              <img src={data.img} alt="avatar" className="itemImg" />
               <div className="details">
                 <h1 className="itemTitle">{data.username}</h1>
                 <div className="detailItem">
@@ -52,9 +53,7 @@ const SingleUser = () => {
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">City:</span>
-                  <span className="itemValue">
-                    {data.city}
-                  </span>
+                  <span className="itemValue">{data.city}</span>
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Country:</span>
@@ -62,24 +61,25 @@ const SingleUser = () => {
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Admin:</span>
-                  <span className="itemValue">{data.isAdmin ? "Yes" : "No"}</span>
+                  <span className="itemValue">
+                    {data.isAdmin ? "Yes" : "No"}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
         {/* edit form */}
-        { openEditForm &&
+        {openEditForm && (
           <div className="bottom">
-          <EditUser 
-          data={data} 
-          userId={id} 
-          openEditForm={openEditForm} 
-          setOpenEditForm={setOpenEditForm} 
-          />
-        </div>
-        }
+            <EditUser
+              data={data}
+              userId={id}
+              openEditForm={openEditForm}
+              setOpenEditForm={setOpenEditForm}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

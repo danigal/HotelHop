@@ -4,57 +4,59 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { host, v } from "../../config/config";
+import { BASE_URL, host, v } from "../../config/config";
 import "./new.scss";
 
 const New = ({ inputs, title }) => {
   const [file, setFile] = useState("");
 
-
   // for taking user inputs
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState({});
 
-  const handleChange = (e) =>{
-    setInfo(prev=>({ ...prev, [e.target.id]: e.target.value  }))
-    console.log(info)
-  }
+  const handleChange = (e) => {
+    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    console.log(info);
+  };
 
-  const handleSubmit = async (e) =>{
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     // transforming file into form data
-    const data = new FormData()
-    
+    const data = new FormData();
+
     // adding key values pairs
-    data.append("file", file)
-    data.append("upload_preset", "upload")
-    try{
+    data.append("file", file);
+    data.append("upload_preset", "upload");
+    try {
       // uploading on cloudinary
-      const uploadResponse = await axios.post("https://api.cloudinary.com/v1_1/shiva10/image/upload", data)
+      const uploadResponse = await axios.post(
+        "https://api.cloudinary.com/v1_1/shiva10/image/upload",
+        data
+      );
 
       // extracting img url
-      const {url} = uploadResponse.data
+      const { url } = uploadResponse.data;
 
       const newUser = {
-        ...info, img: url
-      }
+        ...info,
+        img: url,
+      };
 
-      const res = await axios.post(`${host}/api/${v}/auth/register`, newUser, {
-        credentials: "include"
-      })
+      const res = await axios.post(`${BASE_URL}/auth/register`, newUser, {
+        credentials: "include",
+      });
 
-      setInfo({})
+      setInfo({});
 
       toast(res.data.message, {
         position: "bottom-center",
         type: "success",
         autoClose: 2000,
-        theme: "dark"
-    })
-
-    }catch(err){
-      console.log(err)
+        theme: "dark",
+      });
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className="new">
@@ -66,22 +68,22 @@ const New = ({ inputs, title }) => {
         </div>
         <div className="bottom">
           <div className="left">
-            <label htmlFor="upload" >
-            <img
-              src={
-                file
-                ? URL.createObjectURL(file)
-                : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-              }
-              alt="user-avatar"
+            <label htmlFor="upload">
+              <img
+                src={
+                  file
+                    ? URL.createObjectURL(file)
+                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                }
+                alt="user-avatar"
               />
             </label>
             <input
-                  type="file"
-                  id="upload"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  style={{ display: "none" }}
-                />
+              type="file"
+              id="upload"
+              onChange={(e) => setFile(e.target.files[0])}
+              style={{ display: "none" }}
+            />
           </div>
           <div className="right">
             <form>
@@ -109,7 +111,9 @@ const New = ({ inputs, title }) => {
                   </div>
                 );
               })}
-              <button type="submit" onClick={handleSubmit} >Send</button>
+              <button type="submit" onClick={handleSubmit}>
+                Send
+              </button>
             </form>
           </div>
         </div>

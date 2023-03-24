@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import { host, v } from "../../config/config";
+import { BASE_URL, host, v } from "../../config/config";
 
-const EditHotel = ({data, setOpenEditModal, hotelId, openEditModal}) => {
-
+const EditHotel = ({ data, setOpenEditModal, hotelId, openEditModal }) => {
   const [editInputs, setEditInputs] = useState({
     name: data.name,
     title: data.title,
@@ -25,36 +24,41 @@ const EditHotel = ({data, setOpenEditModal, hotelId, openEditModal}) => {
     }));
   };
 
-  const handleSubmit = async (e) =>{
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    try{
-      const {data} = await axios.put(`${host}/api/${v}/hotels/${hotelId}`, editInputs, {
-        credentials: "include",
-        headers: {
-          "authorization": `Bearer ${JSON.parse(localStorage.getItem("authorization"))}`
+    try {
+      const { data } = await axios.put(
+        `${BASE_URL}/hotels/${hotelId}`,
+        editInputs,
+        {
+          credentials: "include",
+          headers: {
+            authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("authorization")
+            )}`,
+          },
         }
-      })
+      );
 
       toast(data.message, {
         position: "bottom-right",
         type: "success",
         autoClose: 1000,
-        theme: "dark"
-      })
+        theme: "dark",
+      });
 
-      setOpenEditModal(false)
+      setOpenEditModal(false);
       // reFetch()
-      
-    }catch(err){
+    } catch (err) {
       toast(err.message, {
         position: "bottom-right",
-        type: "error"
-      })
+        type: "error",
+      });
     }
-  }
+  };
 
-  console.log(editInputs)
+  console.log(editInputs);
 
   return (
     <>
@@ -172,7 +176,7 @@ const EditHotel = ({data, setOpenEditModal, hotelId, openEditModal}) => {
               onClick={() => {
                 setOpenEditModal(!openEditModal);
               }}
-              />
+            />
           </form>
         </div>
       </div>

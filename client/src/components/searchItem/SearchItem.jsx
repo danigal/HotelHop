@@ -1,12 +1,17 @@
 import "./searchItem.css";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "utils/constants";
 
 const SearchItem = ({ item }) => {
   const navigate = useNavigate();
 
   return (
     <div className="searchItem">
-      <img src={item.photos[0]} alt="" className="siImg" />
+      <img
+        src={`${BASE_URL}/assets/${item.photos[0]}`}
+        alt=""
+        className="siImg"
+      />
       <div className="siDesc">
         <h1 className="siTitle">{item.name}</h1>
         <span className="siDistance">{item.distance}m from center</span>

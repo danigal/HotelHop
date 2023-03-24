@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { host, v } from "../../config/config";
-import "./editUser.scss"
+import { BASE_URL, host, v } from "../../config/config";
+import "./editUser.scss";
 const EditUser = ({ data, userId, openEditForm, setOpenEditForm }) => {
   // to take user editInputs
   const [editInputs, setEditInputs] = useState({
@@ -11,9 +11,8 @@ const EditUser = ({ data, userId, openEditForm, setOpenEditForm }) => {
     phone: data.phone,
     country: data.country,
     city: data.city,
-    isAdmin: data.isAdmin,  
+    isAdmin: data.isAdmin,
   });
-
 
   const handleEdit = (e) => {
     setEditInputs((prev) => ({
@@ -22,36 +21,41 @@ const EditUser = ({ data, userId, openEditForm, setOpenEditForm }) => {
     }));
   };
 
-  const handleSubmit = async (e) =>{
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    try{
-      const {data} = await axios.put(`${host}/api/${v}/users/${userId}`, editInputs, {
-        credentials: "include",
-        headers: {
-          "authorization" : `Bearer ${JSON.parse(localStorage.getItem("authorization"))}`
+    try {
+      const { data } = await axios.put(
+        `${BASE_URL}/users/${userId}`,
+        editInputs,
+        {
+          credentials: "include",
+          headers: {
+            authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("authorization")
+            )}`,
+          },
         }
-      })
+      );
 
       toast(data.message, {
         position: "bottom-center",
-        type: "success"
-      })
+        type: "success",
+      });
 
-      setOpenEditForm(!openEditForm)
-
-    }catch(err){
+      setOpenEditForm(!openEditForm);
+    } catch (err) {
       toast(err.message, {
         position: "bottom-center",
-        type: "error"
-      })
+        type: "error",
+      });
     }
-  }
+  };
 
   return (
     <>
       <h1 className="title">Edit Details</h1>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <div className="editUserDetails">
           <div className="detailItem">
             <label htmlFor="username" className="itemKey">
@@ -112,7 +116,7 @@ const EditUser = ({ data, userId, openEditForm, setOpenEditForm }) => {
             <label htmlFor="isAdmin" className="itemKey">
               Make Admin:
             </label>
-            <select id="isAdmin" onChange={handleEdit} >
+            <select id="isAdmin" onChange={handleEdit}>
               <option value={true}>Yes</option>
               <option value={false}>No</option>
             </select>

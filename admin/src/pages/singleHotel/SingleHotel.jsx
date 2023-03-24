@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 
 // api version
-import { host, v } from "../../config/config";
+import { BASE_URL } from "../../config/config";
 
 // mui icons
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
@@ -26,7 +26,7 @@ const SingleHotel = () => {
   const id = location.pathname.split("/")[2];
   let showPhotoDiv = true;
 
-  const { data, reFetch} = useFetch(`${host}/api/${v}/hotels/${id}`, {
+  const { data, reFetch } = useFetch(`${BASE_URL}/hotels/${id}`, {
     credentials: "include",
   });
 
@@ -43,10 +43,10 @@ const SingleHotel = () => {
 
   const [openEditModal, setOpenEditModal] = useState(false);
 
-  useEffect(()=>{
-    reFetch()
+  useEffect(() => {
+    reFetch();
     // eslint-disable-next-line
-  }, [openEditModal])
+  }, [openEditModal]);
 
   return (
     <div className="single">
@@ -62,11 +62,14 @@ const SingleHotel = () => {
               Edit
             </div>
 
-            {
-            openEditModal && 
-            <EditHotel hotelId={id} data={data} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} 
-            />
-            }
+            {openEditModal && (
+              <EditHotel
+                hotelId={id}
+                data={data}
+                openEditModal={openEditModal}
+                setOpenEditModal={setOpenEditModal}
+              />
+            )}
 
             {!openEditModal && (
               <>

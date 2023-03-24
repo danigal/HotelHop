@@ -3,28 +3,26 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import { host, v } from "../../config/config";
+import { BASE_URL } from "../../config/config";
 import EditRoom from "../../components/editRoom/EditRoom";
-import { format } from "date-fns"
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
 const SingleRoom = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
 
-  const location = useLocation()
-  const id = location.pathname.split("/")[2]
+  const { data, loading, reFetch } = useFetch(`${BASE_URL}/rooms/${id}`, {
+    credentials: "include",
+  });
 
-  const {data, loading, reFetch} = useFetch(`${host}/api/${v}/rooms/${id}`, {
-    credentials: "include"
-  })
+  // to show editmodal
+  const [openEditForm, setOpenEditForm] = useState(false);
 
-
-  // to show editmodal 
-  const [openEditForm, setOpenEditForm] = useState(false)
-
-  useEffect(()=>{
-    reFetch()
+  useEffect(() => {
+    reFetch();
     // eslint-disable-next-line
-  }, [openEditForm])
+  }, [openEditForm]);
 
   return (
     <div className="single">
@@ -32,13 +30,18 @@ const SingleRoom = () => {
       <div className="singleContainer">
         <Navbar />
         <div className="top">
-
           <div className="roomDetails">
-            <div className="editButton" onClick={()=>setOpenEditForm(!openEditForm)} >Edit</div>
+            <div
+              className="editButton"
+              onClick={() => setOpenEditForm(!openEditForm)}
+            >
+              Edit
+            </div>
             <h1 className="title">Information</h1>
             <div className="item">
-
-              { loading ? "Loading..." : (
+              {loading ? (
+                "Loading..."
+              ) : (
                 <div className="details">
                   <h1 className="itemTitle">{data.title}</h1>
                   <div className="detailItem">
@@ -55,43 +58,52 @@ const SingleRoom = () => {
                   </div>
                   <div className="detailItem">
                     <span className="itemKey">Updated :</span>
-                    <span className="itemValue">{new Date(data.updatedAt).getMinutes() } mins ago</span>
+                    <span className="itemValue">
+                      {new Date(data.updatedAt).getMinutes()} mins ago
+                    </span>
                   </div>
                   <div className="detailItem">
                     <span className="itemKey">Rooms:</span>
-                    {data.roomNumbers &&  data.roomNumbers.map(room=>(
-                      <span className="itemValue" style={{marginRight: "5px"}} >{room.number},</span>
-                    ))}
+                    {data.roomNumbers &&
+                      data.roomNumbers.map((room) => (
+                        <span
+                          className="itemValue"
+                          style={{ marginRight: "5px" }}
+                        >
+                          {room.number},
+                        </span>
+                      ))}
                   </div>
                   <div className="detailItem">
-                    <span className="itemKey" style={{marginBottom: "10px"}} >Unavailable Dates:</span>
-                    {data.roomNumbers &&  data.roomNumbers.map((room, index)=>(
-                      <span className="itemValue" key={index} >{room.unavailableDates.map((date)=>(
-                        <div key={date}>
-                          {format(new Date(date), "do/MMM/yy")}
-                        </div>
+                    <span className="itemKey" style={{ marginBottom: "10px" }}>
+                      Unavailable Dates:
+                    </span>
+                    {data.roomNumbers &&
+                      data.roomNumbers.map((room, index) => (
+                        <span className="itemValue" key={index}>
+                          {room.unavailableDates.map((date) => (
+                            <div key={date}>
+                              {format(new Date(date), "do/MMM/yy")}
+                            </div>
+                          ))}
+                        </span>
                       ))}
-                      </span>
-                    ))}
                   </div>
                 </div>
               )}
-              
             </div>
           </div>
-          
         </div>
-        {
-          openEditForm &&
-        <div className="bottom">
-          <EditRoom 
-          roomId={id} 
-          openEditForm={openEditForm} 
-          setOpenEditForm={setOpenEditForm} 
-          data={data}
-          />
-        </div>
-        }
+        {openEditForm && (
+          <div className="bottom">
+            <EditRoom
+              roomId={id}
+              openEditForm={openEditForm}
+              setOpenEditForm={setOpenEditForm}
+              data={data}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

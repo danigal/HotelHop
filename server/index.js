@@ -13,17 +13,13 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import hotelRoutes from "./routes/hotels.js";
 import roomRoutes from "./routes/rooms.js";
-//import sceneRoutes from "./routes/scenes.js";
 
 import { register } from "./controllers/auth.js";
-//import { createScene } from "./controllers/scenes.js";
-//import { verifyToken } from "./middleware/auth.js";
 
 // data imports
 import User from "./models/User.js";
 import Hotel from "./models/Hotel.js";
-//import Scene from "./models/Scene.js";
-//-import { users, scenarios } from "./data/index.js";
+import Room from "./models/Room.js";
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -53,20 +49,12 @@ const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
 app.post("/auth/register", upload.single("picture"), register);
-//app.post(
-//   "/scenes/:scenarioId",
-//   upload.single("picture"),
-//   verifyToken,
-//   createScene
-// );
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/hotels", hotelRoutes);
 app.use("/rooms", roomRoutes);
-//app.use("/scenes", sceneRoutes);
-//app.use("/spots", spotRoutes);
 
 /* ERROR HANDLING */
 app.use((err, req, res, next) => {
@@ -93,6 +81,6 @@ mongoose
 
     /* ADD DATA ONE TIME */
     //User.insertMany(users);
-    //Scenario.insertMany(scenarios);
+    //Scenario.insertMany(hotels);
   })
   .catch((error) => console.log(`${error} did not connect`));

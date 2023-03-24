@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { host, v } from "../../config/config";
+import { BASE_URL } from "../../config/config";
 import useFetch from "../../hooks/useFetch";
 import { hotelInputs } from "../new/formSource";
 import "./newHotel.scss";
@@ -24,7 +24,7 @@ const NewHotel = () => {
   };
 
   // fetching all the rooms to select
-  const { data, loading } = useFetch(`${host}/api/${v}/rooms/`);
+  const { data, loading } = useFetch(`${BASE_URL}/rooms/`);
 
   const handleSelect = (e) => {
     // e.target.selectedOptions will give html collections, so making array out of it
@@ -56,34 +56,34 @@ const NewHotel = () => {
 
           // extracting img url
           const { url } = uploadResponse.data;
-          
-          return url;   // for each image we are returning the url from map method
+
+          return url; // for each image we are returning the url from map method
         })
       );
 
       const newHotel = {
         ...info,
         rooms: rooms,
-        photos: list
-      }
-   
-      const res = await axios.post(`${host}/api/${v}/hotels`, newHotel, {
+        photos: list,
+      };
+
+      const res = await axios.post(`${BASE_URL}/hotels`, newHotel, {
         credentials: "include",
         headers: {
-          "authorization" : `Bearer ${JSON.parse(localStorage.getItem("authorization"))}`
-        }
-      })
+          authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("authorization")
+          )}`,
+        },
+      });
 
       toast(res.data.message, {
         position: "bottom-right",
         type: "success",
         autoClose: 1000,
-        theme: "dark"
-    }) 
-
+        theme: "dark",
+      });
     } catch (err) {
-      console.log(err.message)
-      
+      console.log(err.message);
     }
   };
 
@@ -144,7 +144,7 @@ const NewHotel = () => {
               })}
               <div className="formInput">
                 <label htmlFor="featured">Featured</label>
-                <select name="featured" id="featured" onClick={handleChange} >
+                <select name="featured" id="featured" onClick={handleChange}>
                   <option value={true}>Yes</option>
                   <option value={false}>No</option>
                 </select>

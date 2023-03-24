@@ -1,16 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react"
+import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { host, v } from "../../config/config";
-import "./editRoom.scss"
+import { BASE_URL, host, v } from "../../config/config";
+import "./editRoom.scss";
 
-const EditRoom = ({ data, roomId, openEditForm, setOpenEditForm }) =>{
-
+const EditRoom = ({ data, roomId, openEditForm, setOpenEditForm }) => {
   const [editInputs, setEditInputs] = useState({
     title: data.title,
     price: data.price,
     maxPeople: data.maxPeople,
-    desc: data.desc,  
+    desc: data.desc,
   });
 
   const handleEdit = (e) => {
@@ -20,37 +19,41 @@ const EditRoom = ({ data, roomId, openEditForm, setOpenEditForm }) =>{
     }));
   };
 
-  const handleSubmit = async (e) =>{
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    try{
-      const {data} = await axios.put(`${host}/api/${v}/rooms/${roomId}`, editInputs, {
-        credentials: "include",
-        headers: {
-          "authorization" : `Bearer ${JSON.parse(localStorage.getItem("authorization"))}`
+    try {
+      const { data } = await axios.put(
+        `${BASE_URL}/rooms/${roomId}`,
+        editInputs,
+        {
+          credentials: "include",
+          headers: {
+            authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("authorization")
+            )}`,
+          },
         }
-      })
+      );
 
       toast(data.message, {
         position: "bottom-center",
-        type: "success"
-      })
+        type: "success",
+      });
 
-      setOpenEditForm(!openEditForm)
-
-    }catch(err){
+      setOpenEditForm(!openEditForm);
+    } catch (err) {
       toast(err.message, {
         position: "bottom-center",
-        type: "error"
-      })
+        type: "error",
+      });
     }
-  }
+  };
 
-
-  return(
+  return (
     <div>
       <h1 className="title">Edit Room</h1>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <div className="editRoomDetails">
           <div className="detailItem">
             <label htmlFor="username" className="itemKey">
@@ -102,6 +105,6 @@ const EditRoom = ({ data, roomId, openEditForm, setOpenEditForm }) =>{
         </div>
       </form>
     </div>
-  )
-}
-export default EditRoom
+  );
+};
+export default EditRoom;
