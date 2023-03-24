@@ -11,20 +11,27 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { BASE_URL } from "utils/constants";
 import { SearchContext } from "context/SearchContext";
+import { useSelector } from "react-redux";
+import Reserve from "components/reserve/Reserve";
 
 const Hotel = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openBookModal, setOpenBookModal] = useState(false);
 
   const { data, loading, error } = useFetch(`${BASE_URL}/hotels/find/${id}`);
 
   const { dates, options } = useContext(SearchContext);
+
+  const { user } = useSelector((state) => state.user) || {};
+  const navigate = useNavigate();
+  console.log(user);
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -50,6 +57,14 @@ const Hotel = () => {
     }
 
     setSlideNumber(newSlideNumber);
+  };
+
+  const handleBooking = () => {
+    if (user) {
+      setOpenBookModal(true);
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -127,7 +142,7 @@ const Hotel = () => {
                   <b>{days * data.cheapestPrice * options.room}€</b> ({days}{" "}
                   nights)
                 </h2>
-                <button>Reserve or Book Now!</button>
+                <button onClick={handleBooking}>Reserve or Book Now!</button>
               </div>
             </div>
           </div>
@@ -135,6 +150,7 @@ const Hotel = () => {
           <Footer />
         </div>
       )}
+      {openBookModal && <Reserve setOpen={setOpenBookModal} hotelId={id} />}
     </div>
   );
 };

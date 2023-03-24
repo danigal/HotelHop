@@ -4,6 +4,7 @@ import { createError } from "../utils/error.js";
 
 export const createRoom = async (req, res, next) => {
   const hotelId = req.params.hotelid;
+  console.log("Hla");
   const newRoom = new Room(req.body);
 
   try {
@@ -39,7 +40,7 @@ export const updateRoomAvailability = async (req, res, next) => {
       { "roomNumbers._id": req.params.id },
       {
         $push: {
-          "roomNumbers.$.unavailableDates": req.body.dates
+          "roomNumbers.$.unavailableDates": req.body.dates,
         },
       }
     );
